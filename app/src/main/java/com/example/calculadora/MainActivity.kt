@@ -25,6 +25,7 @@ class MainActivity : ComponentActivity() {
 // Esta función define la interfaz y la lógica de la calculadora
 @Composable
 fun AplicacionCalculadora() {
+    // Variables de estado para almacenar los números ingresados y el resultado
     var numero1 by remember { mutableStateOf("") }
     var numero2 by remember { mutableStateOf("") }
     var resultado by remember { mutableStateOf("") }
@@ -35,6 +36,7 @@ fun AplicacionCalculadora() {
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
+        // Campo de texto para ingresar el primer número
         TextField(
             value = numero1,
             onValueChange = { numero1 = it },
@@ -42,6 +44,8 @@ fun AplicacionCalculadora() {
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
+        // Campo de texto para ingresar el segundo número
         TextField(
             value = numero2,
             onValueChange = { numero2 = it },
@@ -49,16 +53,48 @@ fun AplicacionCalculadora() {
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
-        // Este botón ejecuta la operación de suma cuando se presiona
-        Button(onClick = {
-            val n1 = numero1.toDoubleOrNull() ?: 0.0
-            val n2 = numero2.toDoubleOrNull() ?: 0.0
-            resultado = (n1 + n2).toString()
-        },
-            modifier = Modifier.fillMaxWidth()) {
-            Text("Sumar")
+
+        // Fila de botones para realizar las operaciones matemáticas
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            // Botón de suma
+            Button(onClick = {
+                val n1 = numero1.toDoubleOrNull() ?: 0.0
+                val n2 = numero2.toDoubleOrNull() ?: 0.0
+                resultado = (n1 + n2).toString()
+            }) {
+                Text("+")
+            }
+            //Botón de resta
+            Button(onClick = {
+                val n1 = numero1.toDoubleOrNull() ?: 0.0
+                val n2 = numero2.toDoubleOrNull() ?: 0.0
+                resultado = (n1 - n2).toString()
+            }) {
+                Text("-")
+            }
+            // Botón de multiplicación
+            Button(onClick = {
+                val n1 = numero1.toDoubleOrNull() ?: 0.0
+                val n2 = numero2.toDoubleOrNull() ?: 0.0
+                resultado = (n1 * n2).toString()
+            }) {
+                Text("×")
+            }
+            // Botón de división, manejando la división por cero
+            Button(onClick = {
+                val n1 = numero1.toDoubleOrNull() ?: 0.0
+                val n2 = numero2.toDoubleOrNull()
+                resultado = if (n2 != null && n2 != 0.0) {
+                    (n1 / n2).toString()
+                } else {
+                    "Error"
+                }
+            }) {
+                Text("÷")
+            }
         }
         Spacer(modifier = Modifier.height(16.dp))
+
         // Este texto muestra el resultado de la operación al usuario
         Text("Resultado: $resultado", fontSize = 20.sp)
     }
